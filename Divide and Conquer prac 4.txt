@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+void merge(int * num,int low,int mid,int up);
+void mergesort(int * num,int low,int up);
+int main()
+{
+	int n;
+	cout<<"\nenter the no of elements=";
+	cin>>n;
+	int * num=new int[n];
+	for(int i=0;i<n;i++)
+	{
+		cout<<"\nenter the numbers to be sorted";
+		cin>>num[i];
+	}
+	mergesort(num,0,n-1);
+	for(int i=0;i<n;i++)
+	{
+		cout<<num[i];;
+		cout<<"     ";
+	}
+	
+}
+void mergesort(int * num,int low,int up)
+{
+	if(low>=up)
+	{
+		return;
+	}
+	else
+	{
+		int mid=(up+low)/2;
+		mergesort(num,low,mid);
+		mergesort(num,mid+1,up);
+		merge(num,low,mid,up);
+	}
+}
+void merge(int * num,int low,int mid,int up)
+{
+	int i,j,n,k=0;
+	n=up-low+1;
+	int * res;
+	res=new int[n];
+	i=low;
+	j=mid+1;
+	while(i<=mid&&j<=up)
+	{
+		if(num[i]<num[j])
+		{
+			res[k]=num[i];
+			i++;
+			k++;
+		}
+		if(num[i]>=num[j])
+		{
+			res[k]=num[j];
+			j++;
+			k++;
+		}
+	}
+	while(i<=mid)
+	{
+		res[k]=num[i];
+		k++;
+		i++;
+	}
+	while(j<=up)
+	{
+		res[k]=num[j];
+		k++;
+		j++;
+	}
+	k=0;
+	for(i=low;i<=up;i++)
+	{
+		num[i]=res[k];
+		k++;
+	}
+}
