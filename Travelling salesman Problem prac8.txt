@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <limits>
+using namespace std;
+
+const int INF = 1e9;
+
+int tsp(vector<vector<int>>& graph, vector<bool>& visited, int currPos, int n, int count, int cost, int start, int& minCost)
+{
+    if (count == n && graph[currPos][start])
+    {
+        minCost = min(minCost, cost + graph[currPos][start]);
+        return minCost;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (!visited[i] && graph[currPos][i])
+        {
+            visited[i] = true;
+            tsp(graph, visited, i, n, count + 1, cost + graph[currPos][i], start, minCost);
+            visited[i] = false;
+        }
+    }
+
+    return minCost;
+}
+
+int main()
+{
+    vector<vector<int>> graph = {
+        {0, 10, 15, 20},
+        {10, 0, 35, 25},
+        {15, 35, 0, 30},
+        {20, 25, 30, 0}
+    };
+
+    int n = graph.size();
+    vector<bool> visited(n, false);
+    visited[0] = true;
+    int minCost = INF;
+
+    int cost = tsp(graph, visited, 0, n, 1, 0, 0, minCost);
+
+    cout << "Minimum cost of TSP: " << cost << endl;
+
+    return 0;
+}
