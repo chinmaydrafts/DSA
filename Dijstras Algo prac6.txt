@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <utility>
+using namespace std;
+
+class Solution {
+public:
+    // Function to find the shortest distance of all the vertices from the source vertex S.
+    vector<int> dijkstra(int V, vector<vector<int>> adj[], int S) {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        vector<int> dist(V, 1e9);
+
+        dist[S] = 0;
+        pq.push({0, S});
+
+        while (!pq.empty()) {
+            int dis = pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+
+            for (auto it : adj[node]) {
+                int adjNode = it[0];
+                int edgeWeight = it[1];
+
+                if (dis + edgeWeight < dist[adjNode]) {
+                    dist[adjNode] = dis + edgeWeight;
+                    pq.push({dist[adjNode], adjNode});
+                }
+            }
+        }
+        return dist;
+    }
+};
+
+int main() {
+    int V = 5; // number of vertices
+    vector<vector<int>> adj[V];
+
+    // Edges in the format: from -> {to, weight}
+    adj[0].push_back({1, 2});
+    adj[1].push_back({0, 2});
+
+    adj[0].push_back({2, 4});
+    adj[2].push_back({0, 4});
+
+    adj[1].push_back({2, 1});
+    adj[2].push_back({1, 1});
+
+    adj[1].push_back({3, 7});
+    adj[3].push_back({1, 7});
+
+    adj[2].push_back({4, 3});
+    adj[4].push_back({2, 3});
+
+    int source = 0;
+
+    Solution obj;
+    vector<int> distances = obj.dijkstra(V, adj, source);
+
+    cout << "Shortest distances from node " << source << ":\n";
+    for (int i = 0; i < distances.size(); ++i) {
+        cout << "Node " << i << " -> " << distances[i] << "\n";
+    }
+
+    return 0;
+}
