@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+void downadjust(int * heap,int i);
+int main()
+{
+	int n;
+	cout<<"\nenter the number of elements=";
+	cin>>n;
+	int * heap=new int[n+1];
+	int i;
+	for(i=1;i<=n;i++)
+	{
+		cout<<"\nenter the elements=";
+		cin>>heap[i];
+	}
+	heap[0]=n;
+	int k=heap[0]/2;
+	for(k=heap[0]/2;k>=1;k--)
+	{
+		downadjust(heap,k);
+	}
+	cout<<"\nthe max heap";
+	for(i=1;i<=heap[0];i++)
+	{
+		cout<<"\n"<<heap[i];
+	}
+	// now we have map heap created;
+	while(heap[0]>1)
+	{
+		swap(heap[1],heap[heap[0]]);
+		heap[0]--;
+		downadjust(heap,1);
+	}
+	heap[0]=n;
+	//print the soretd array
+	cout<<"\nthe sorted array is =";
+	
+	for(i=1;i<=heap[0];i++)
+	{
+		cout<<"\n"<<heap[i];
+	}
+	
+	
+	return 0;
+}
+void downadjust(int * heap,int i)
+{
+	int n=heap[0];
+	int j;
+	while(2*i<=n)
+	{
+		j=2*i;
+		if(j+1<=n)
+		{
+			if(heap[j]<heap[j+1])
+			{
+				j++;
+			}
+		}
+		
+		// now j is on maximum child;
+		if(heap[i]<heap[j])
+		{
+			swap(heap[i],heap[j]);
+			i=j;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+}
